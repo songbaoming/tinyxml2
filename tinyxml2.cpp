@@ -1637,9 +1637,11 @@ float XMLElement::FloatAttribute(const char* name, float defaultValue) const
 
 const char* XMLElement::GetText() const
 {
-    if ( FirstChild() && FirstChild()->ToText() ) {
-        return FirstChild()->Value();
-    }
+	for (const XMLNode *node = _firstChild; node; node = node->_next) {
+		if (node->ToText()) {
+			return node->Value();
+		}
+	}
     return 0;
 }
 
@@ -1711,34 +1713,34 @@ void XMLElement::SetText( double v )
 
 XMLError XMLElement::QueryIntText( int* ival ) const
 {
-    if ( FirstChild() && FirstChild()->ToText() ) {
-        const char* t = FirstChild()->Value();
-        if ( XMLUtil::ToInt( t, ival ) ) {
+	const char *t = GetText();
+	if ( t ) {
+		if ( XMLUtil::ToInt( t, ival ) ) {
             return XML_SUCCESS;
         }
         return XML_CAN_NOT_CONVERT_TEXT;
-    }
-    return XML_NO_TEXT_NODE;
+	}
+	return XML_NO_TEXT_NODE;
 }
 
 
 XMLError XMLElement::QueryUnsignedText( unsigned* uval ) const
 {
-    if ( FirstChild() && FirstChild()->ToText() ) {
-        const char* t = FirstChild()->Value();
-        if ( XMLUtil::ToUnsigned( t, uval ) ) {
+	const char *t = GetText();
+	if (t) {
+		if ( XMLUtil::ToUnsigned( t, uval ) ) {
             return XML_SUCCESS;
         }
         return XML_CAN_NOT_CONVERT_TEXT;
-    }
-    return XML_NO_TEXT_NODE;
+	}
+	return XML_NO_TEXT_NODE;
 }
 
 
 XMLError XMLElement::QueryInt64Text(int64_t* ival) const
 {
-	if (FirstChild() && FirstChild()->ToText()) {
-		const char* t = FirstChild()->Value();
+	const char *t = GetText();
+	if (t) {
 		if (XMLUtil::ToInt64(t, ival)) {
 			return XML_SUCCESS;
 		}
@@ -1750,53 +1752,53 @@ XMLError XMLElement::QueryInt64Text(int64_t* ival) const
 
 XMLError XMLElement::QueryUnsigned64Text(uint64_t* ival) const
 {
-    if(FirstChild() && FirstChild()->ToText()) {
-        const char* t = FirstChild()->Value();
-        if(XMLUtil::ToUnsigned64(t, ival)) {
+	const char *t = GetText();
+	if (t) {
+		if(XMLUtil::ToUnsigned64(t, ival)) {
             return XML_SUCCESS;
         }
         return XML_CAN_NOT_CONVERT_TEXT;
-    }
-    return XML_NO_TEXT_NODE;
+	}
+	return XML_NO_TEXT_NODE;
 }
 
 
 XMLError XMLElement::QueryBoolText( bool* bval ) const
 {
-    if ( FirstChild() && FirstChild()->ToText() ) {
-        const char* t = FirstChild()->Value();
-        if ( XMLUtil::ToBool( t, bval ) ) {
+	const char *t = GetText();
+	if (t) {
+		if ( XMLUtil::ToBool( t, bval ) ) {
             return XML_SUCCESS;
         }
         return XML_CAN_NOT_CONVERT_TEXT;
-    }
-    return XML_NO_TEXT_NODE;
+	}
+	return XML_NO_TEXT_NODE;
 }
 
 
 XMLError XMLElement::QueryDoubleText( double* dval ) const
 {
-    if ( FirstChild() && FirstChild()->ToText() ) {
-        const char* t = FirstChild()->Value();
-        if ( XMLUtil::ToDouble( t, dval ) ) {
+	const char *t = GetText();
+	if (t) {
+		if ( XMLUtil::ToDouble( t, dval ) ) {
             return XML_SUCCESS;
         }
         return XML_CAN_NOT_CONVERT_TEXT;
-    }
-    return XML_NO_TEXT_NODE;
+	}
+	return XML_NO_TEXT_NODE;
 }
 
 
 XMLError XMLElement::QueryFloatText( float* fval ) const
 {
-    if ( FirstChild() && FirstChild()->ToText() ) {
-        const char* t = FirstChild()->Value();
-        if ( XMLUtil::ToFloat( t, fval ) ) {
+	const char *t = GetText();
+	if (t) {
+		if ( XMLUtil::ToFloat( t, fval ) ) {
             return XML_SUCCESS;
         }
         return XML_CAN_NOT_CONVERT_TEXT;
-    }
-    return XML_NO_TEXT_NODE;
+	}
+	return XML_NO_TEXT_NODE;
 }
 
 int XMLElement::IntText(int defaultValue) const
